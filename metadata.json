@@ -1,0 +1,6 @@
+{
+  "name": "SAT Deserción Escolar Colombia",
+  "description": "Sistema de alerta temprana y soporte a la decisión para predecir, explicar con SHAP y prescribir acciones operativas contra la deserción escolar en Colombia.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
