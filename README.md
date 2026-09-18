@@ -1,162 +1,164 @@
-# SAT-Deserción Escolar Colombia: Sistema de Alerta Temprana y Soporte a Decisiones para Educación Básica y Media
+# SAT-School Dropout Colombia: Early Warning and Decision Support System for Basic and Secondary Education
 
-[![GovTech Colombia](https://img.shields.io/badge/Sector-Educaci%C3%B3n%20P%C3%BAblica%20Colombia-003366.svg)](https://www.mineducacion.gov.co)
+[![GovTech Colombia](https://img.shields.io/badge/Sector-Colombia%20Public%20Education-003366.svg)](https://www.mineducacion.gov.co)
 [![React 19](https://img.shields.io/badge/React-19.0.1-61DAFB.svg)](https://react.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-7.0.2-3178C6.svg)](https://www.typescriptlang.org)
 [![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-4.3.3-38B2AC.svg)](https://tailwindcss.com)
-[![Machine Learning](https://img.shields.io/badge/Modelos-Dual%20XGBoost%20%2B%20TreeSHAP-FF6600.svg)](https://xgboost.readthedocs.io)
+[![Machine Learning](https://img.shields.io/badge/Models-Dual%20XGBoost%20%2B%20TreeSHAP-FF6600.svg)](https://xgboost.readthedocs.io)
 
-> **Nota de Gobernanza y Alcance:** Esta aplicación es un entorno demostrativo y prototipo funcional para las **97 Secretarías de Educación Certificadas (ETC)** y el **Ministerio de Educación Nacional (MEN)**. Utiliza datos sintéticos estructurados bajo la taxonomía del panel maestro 2018–2023 y no constituye una predicción vinculante oficial.
+> **Governance and Scope Note:** This application is a demonstrative environment and functional prototype for Colombia's **97 Certified Education Authorities (ETC)** and the **Ministry of National Education (MEN)**. It uses synthetic data structured under the taxonomy of the 2018–2023 master panel and does not constitute an official, binding prediction.
 
 ---
 
-## 1. Visión General del Proyecto
+## 1. Project Overview
 
-La deserción escolar en Colombia, especialmente en contextos rurales, municipios PDET y zonas con alta vulnerabilidad socioeconómica, se ha gestionado históricamente mediante **auditorías ex-post**. Cuando el corte anual del SIMAT consolida las cifras de desvinculación, el estudiante ya lleva meses desescolarizado, rompiendo los vínculos de protección comunitaria y mermando el capital humano del país.
+School dropout in Colombia — especially in rural contexts, PDET municipalities, and areas of high socioeconomic vulnerability — has historically been managed through **ex-post audits**. By the time the annual SIMAT cutoff consolidates disengagement figures, the student has already been out of school for months, breaking community protection ties and eroding the country's human capital.
 
-**SAT-Deserción** es un sistema analítico interactivo GovTech de soporte a decisiones diseñado bajo un paradigma en tres niveles:
+**SAT-Dropout** is an interactive GovTech decision-support analytics system designed under a three-tier paradigm:
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐
-│ 1. PREDECIR   ¿Dónde y en qué sedes se concentra el riesgo crítico?    │
+│ 1. PREDICT    Where and in which school sites is critical risk         │
+│               concentrated?                                             │
 │      ↓                                                                  │
-│ 2. EXPLICAR   ¿Qué factores estructurales o coyunturales lo explican?   │
-│      ↓        (Descomposición aditiva local TreeSHAP)                   │
-│ 3. PRESCRIBIR ¿Qué intervenciones preventivas priorizadas desplegar?    │
-│               (PAE, transporte rural, equipos psicosociales, tutorías)  │
+│ 2. EXPLAIN    What structural or contextual factors explain it?         │
+│      ↓        (Local additive decomposition via TreeSHAP)               │
+│ 3. PRESCRIBE  Which preventive interventions should be prioritized?     │
+│               (School meals, rural transport, psychosocial teams,       │
+│               tutoring)                                                 │
 └─────────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## 2. Estructura de las 10 Pestañas Operativas
+## 2. Structure of the 10 Operational Tabs
 
-La aplicación integra 10 módulos funcionales para analistas de datos, directores de cobertura y Secretarios de Educación:
+The application integrates 10 functional modules for data analysts, coverage directors, and Education Secretaries:
 
-1. **Contexto del Problema (`TabContextProblem`):**
-   - Diagnóstico del ciclo de deserción en Colombia, magnitud fiscal del problema (pérdida de inversión pública por alumno desvinculado) y transición de políticas reactivas a alertas tempranas preventivas.
+1. **Problem Context (`TabContextProblem`):**
+   - Diagnosis of the dropout cycle in Colombia, the fiscal magnitude of the problem (public investment lost per disengaged student), and the shift from reactive policies to preventive early warnings.
 
-2. **Pipeline de Datos "Medusa" (`TabDataPipeline`):**
-   - Arquitectura de ingesta y armonización de 5 fuentes oficiales: **DANE C-600**, **SIMAT/SINEB (MEN)**, **ICFES Saber 11**, **IPM/TerriData (DNP)** y **Registros PDET/ZOMAC**.
-   - Resuelve el matching DIVIPOLA (98.3%), manejo de valores atípicos, políticas de imputación en 3 niveles y blindaje contra *data leakage* temporal.
+2. **"Medusa" Data Pipeline (`TabDataPipeline`):**
+   - Ingestion and harmonization architecture for 5 official sources: **DANE C-600**, **SIMAT/SINEB (MEN)**, **ICFES Saber 11**, **IPM/TerriData (DNP)**, and **PDET/ZOMAC Records**.
+   - Resolves DIVIPOLA matching (98.3%), outlier handling, 3-tier imputation policies, and safeguards against temporal *data leakage*.
 
-3. **Validación de Modelos (`TabModelValidation`):**
-   - Comparativa de métricas de desempeño entre modelos (Regresión Logística, Random Forest, XGBoost Full y XGBoost Ligero).
-   - Matrices de confusión interactivas, curvas ROC y curvas de Precisión-Recall, evaluando el *trade-off* entre falsos positivos y falsos negativos según costo de intervención.
+3. **Model Validation (`TabModelValidation`):**
+   - Performance comparison across models (Logistic Regression, Random Forest, Full XGBoost, and Light XGBoost).
+   - Interactive confusion matrices, ROC curves, and Precision-Recall curves, evaluating the trade-off between false positives and false negatives based on intervention cost.
 
-4. **Retorno de Inversión Fiscal (`TabFinancialROI`):**
-   - Simulador paramétrico de impacto socioeconómico: tasa de éxito de retención (5% a 9%), costo per cápita de intervención y cálculo de pérdida fiscal evitada (entre \$140B y \$252B COP anuales con relación B/C de 1.2x a 2.1x).
+4. **Fiscal Return on Investment (`TabFinancialROI`):**
+   - Parametric simulator of socioeconomic impact: retention success rate (5% to 9%), per-capita intervention cost, and calculation of avoided fiscal loss (between \$140B and \$252B COP annually, with a B/C ratio of 1.2x to 2.1x).
 
-5. **Tablero de Control Nacional (`TabNationalDashboard`):**
-   - Monitoreo macro de 56.557 sedes educativas a nivel país: tasa nacional de deserción proyectada, sedes en alerta roja/naranja/amarilla/verde, distribución urbana/rural y concentración de riesgo en municipios PDET.
+5. **National Control Dashboard (`TabNationalDashboard`):**
+   - Macro-level monitoring of 56,557 school sites nationwide: projected national dropout rate, sites in red/orange/yellow/green alert, urban/rural distribution, and risk concentration in PDET municipalities.
 
-6. **Análisis Territorial (`TabTerritorialAnalysis`):**
-   - Mapa coroplético interactivo de los 32 departamentos de Colombia con gradiente de riesgo.
-   - Selector comparativo entre **umbral fijo nacional (5.0%)** y **percentiles relativos por departamento (Top 10% / Top 15%)**, ajustando el volumen de alertas a la capacidad operativa de los equipos de campo de cada Secretaría.
+6. **Territorial Analysis (`TabTerritorialAnalysis`):**
+   - Interactive choropleth map of Colombia's 32 departments with a risk gradient.
+   - Comparative selector between a **fixed national threshold (5.0%)** and **relative percentiles by department (Top 10% / Top 15%)**, adjusting alert volume to each Education Authority's field-team operating capacity.
 
-7. **Análisis Detallado por Sede (`TabSchoolAnalysis`):**
-   - Ficha técnica a nivel de establecimiento y sede educativa (código DANE 12 dígitos).
-   - KPIs de matrícula, tendencia interanual, dotación de servicios básicos, cobertura del PAE, déficit de transporte escolar y nivel de riesgo estimado.
+7. **Detailed School Site Analysis (`TabSchoolAnalysis`):**
+   - Technical profile at the institution and school-site level (12-digit DANE code).
+   - KPIs for enrollment, year-over-year trend, basic services provisioning, school meal (PAE) coverage, rural transport deficit, and estimated risk level.
 
-8. **Explicabilidad TreeSHAP (`TabExplainability`):**
-   - Descomposición aditiva local del vector de riesgo de la sede seleccionada en relación con el valor base poblacional (*base value* $E[f(x)]$).
-   - Gráfico tipo *force plot* / cascada separando factores aceleradores de riesgo (rojo) y amortiguadores protectores (azul), con narrativa en lenguaje natural para funcionarios no técnicos.
+8. **TreeSHAP Explainability (`TabExplainability`):**
+   - Local additive decomposition of the selected site's risk vector relative to the population base value ($E[f(x)]$).
+   - Force-plot / waterfall chart separating risk-accelerating factors (red) from protective, risk-dampening factors (blue), with natural-language narrative for non-technical officials.
 
-9. **Plan de Acción Prescriptivo (`TabRecommendations`):**
-   - Motor de reglas que traduce factores de riesgo identificados en acciones concretas: cupos alimentarios PAE, rutas de transporte escolar rural, comités psicosociales o refuerzo pedagógico.
-   - Tablero de seguimiento con estados (Pendiente, En Gestión, Desplegado), asignación de responsable, notas de bitácora, persistencia en `localStorage` y **exportación a CSV**.
+9. **Prescriptive Action Plan (`TabRecommendations`):**
+   - Rule engine that translates identified risk factors into concrete actions: school meal (PAE) slots, rural school transport routes, psychosocial committees, or pedagogical reinforcement.
+   - Tracking board with statuses (Pending, In Progress, Deployed), owner assignment, logbook notes, `localStorage` persistence, and **CSV export**.
 
-10. **Gobernanza y Ética de la IA (`TabGovernanceEthics`):**
-    - Monitor de *concept drift* interanual (caso de estudio: caída de AUC 0.81 en 2023 a 0.77 en 2024 tras shock migratorio/económico regional).
-    - Explorador interactivo del Diccionario de Datos del Panel Maestro con tooltips explicativos.
-    - Matriz de salvaguardas éticas y cumplimiento de la **Ley 1581 de 2012 (Hábeas Data)** y principios de no discriminación y no punitividad en escuelas vulnerables.
+10. **AI Governance and Ethics (`TabGovernanceEthics`):**
+    - Year-over-year *concept drift* monitor (case study: AUC drop from 0.81 in 2023 to 0.77 in 2024 following a regional migration/economic shock).
+    - Interactive explorer of the Master Panel Data Dictionary with explanatory tooltips.
+    - Matrix of ethical safeguards and compliance with **Law 1581 of 2012 (Habeas Data)** and principles of non-discrimination and non-punitiveness toward vulnerable schools.
 
 ---
 
-## 3. Modelo Dual XGBoost
+## 3. Dual XGBoost Model
 
-Para garantizar cobertura sin sesgos de exclusión, el sistema implementa una arquitectura de dos modelos:
+To ensure coverage without exclusion bias, the system implements a two-model architecture:
 
-| Dimensión | Modelo Full (Secundaria y Media) | Modelo Ligero (Primaria Pura) |
+| Dimension | Full Model (Secondary & Upper Secondary) | Light Model (Primary Only) |
 |---|---|---|
-| **Población Objetivo** | Sedes con grados 9° a 11° y registro en pruebas Saber 11 | Sedes rurales o urbanas de básica primaria (grados 1° a 5°) |
-| **Variables Clave** | Puntaje global y percentiles Saber 11, tasa de repitencia histórica, trayectorias académicas | IPM municipal, tiempo de desplazamiento a pie, cobertura PAE, contracción de matrícula, ruralidad |
-| **Métrica AUC** | 0.842 | 0.798 |
-| **Justificación** | Maximiza la precisión aprovechando el rendimiento académico estandarizado | Evita excluir miles de sedes rurales que no presentan Saber 11 pero tienen alto riesgo de desescolarización |
+| **Target Population** | Sites with grades 9–11 and Saber 11 exam records | Rural or urban primary school sites (grades 1–5) |
+| **Key Variables** | Saber 11 global score and percentiles, historical repetition rate, academic trajectories | Municipal IPM, walking commute time, PAE coverage, enrollment contraction, rurality |
+| **AUC Metric** | 0.842 | 0.798 |
+| **Rationale** | Maximizes precision by leveraging standardized academic performance | Avoids excluding thousands of rural sites that don't administer Saber 11 but carry high dropout risk |
 
 ---
 
-## 4. Panel Maestro de Datos (Variables Principales)
+## 4. Master Data Panel (Main Variables)
 
-El panel consolida **319.609 observaciones sede-año** sobre **56.557 sedes educativas**:
+The panel consolidates **319,609 school-site-year observations** across **56,557 school sites**:
 
-- `SEDE_CODIGO`: Identificador único DANE de 12 dígitos.
-- `PERIODO_ANIO`: Año escolar (2018–2023).
-- `FLAG_DESERCION` / `FLAG_ALTO_RIESGO`: Variable objetivo binaria de riesgo crítico.
-- `DESERCION_LAG1`: Tasa de deserción observada en el periodo inmediatamente anterior ($t-1$).
-- `MATRICULA_TOTAL`: Alumnos matriculados en el corte oficial.
-- `DELTA_MATRICULA_PCT`: Tasa de variación porcentual interanual de la matrícula.
-- `INDICE_VULNERABILIDAD`: Índice sintético de vulnerabilidad socioeconómica estudiantil (0–100).
-- `IPM_MUNICIPAL`: Índice de Pobreza Multidimensional DNP/DANE del municipio.
-- `FLAG_RURAL`: Indicador booleano de sede rural o dispersa.
-- `FLAG_PDET` / `FLAG_ZOMAC`: Indicador de municipio prioritario para el posconflicto.
-- `DEFICIT_TRANSPORTE_RURAL`: Indicador de distancia de caminata >45 min sin ruta escolar pública.
-- `COBERTURA_PAE_SEDE`: Porcentaje efectivo de estudiantes beneficiarios del Programa de Alimentación Escolar.
-- `PUNTAJE_SABER11_GLOBAL`: Puntaje promedio estandarizado ICFES Saber 11 (200–400).
-- `FLAG_PANDEMIA`: Flag de contingencia COVID-19 2020–2021 (aislado del entrenamiento central para evitar sesgo de choque).
+- `SEDE_CODIGO`: Unique 12-digit DANE school-site identifier.
+- `PERIODO_ANIO`: School year (2018–2023).
+- `FLAG_DESERCION` / `FLAG_ALTO_RIESGO`: Binary critical-risk target variable.
+- `DESERCION_LAG1`: Dropout rate observed in the immediately preceding period ($t-1$).
+- `MATRICULA_TOTAL`: Enrolled students at the official cutoff.
+- `DELTA_MATRICULA_PCT`: Year-over-year percentage change in enrollment.
+- `INDICE_VULNERABILIDAD`: Synthetic student socioeconomic vulnerability index (0–100).
+- `IPM_MUNICIPAL`: Municipal DNP/DANE Multidimensional Poverty Index.
+- `FLAG_RURAL`: Boolean indicator for rural or dispersed school site.
+- `FLAG_PDET` / `FLAG_ZOMAC`: Indicator for post-conflict priority municipality.
+- `DEFICIT_TRANSPORTE_RURAL`: Indicator of a >45-minute walking commute with no public school transport route.
+- `COBERTURA_PAE_SEDE`: Effective percentage of students benefiting from the School Meal Program (PAE).
+- `PUNTAJE_SABER11_GLOBAL`: Average standardized ICFES Saber 11 score (200–400).
+- `FLAG_PANDEMIA`: COVID-19 2020–2021 contingency flag (isolated from core training to avoid shock bias).
 
 ---
 
-## 5. Instalación y Ejecución Local
+## 5. Local Installation and Setup
 
-### Prerrequisitos
-- **Node.js**: v18.0 o superior (recomendado v20+)
-- **npm**: v9.0 o superior
+### Prerequisites
+- **Node.js**: v18.0 or higher (v20+ recommended)
+- **npm**: v9.0 or higher
 
-### Pasos
+### Steps
 
 ```bash
-# 1. Clonar el repositorio
-git clone https://github.com/tu-organizacion/sat-desercion-colombia.git
+# 1. Clone the repository
+git clone https://github.com/your-organization/sat-desercion-colombia.git
 cd sat-desercion-colombia
 
-# 2. Instalar dependencias
+# 2. Install dependencies
 npm install
 
-# 3. Iniciar el servidor de desarrollo (puerto 3000)
+# 3. Start the development server (port 3000)
 npm run dev
 
-# 4. Compilar para producción
+# 4. Build for production
 npm run build
 
-# 5. Ejecutar verificación de linter
+# 5. Run linter checks
 npm run lint
 ```
 
-El servidor local se ejecutará en:
+The local server will run at:
 `http://localhost:3000`
 
 ---
 
-## 6. Pila Tecnológica
+## 6. Technology Stack
 
-- **Frontend:** React 19, TypeScript, Tailwind CSS v4, Motion (animaciones de interfaz y transiciones de pestañas).
-- **Iconografía:** Lucide React.
-- **Visualización y Mapas:** Choropleth vectorial SVG con geometrías de los 32 departamentos de Colombia, barras de distribución, matrices de confusión y gráficos de fuerza SHAP.
-- **Persistencia:** `localStorage` para planes de acción y estados de intervención por sede; generación nativa de reportes CSV.
-- **Herramientas de Build:** Vite 8, esbuild.
-
----
-
-## 7. Principios de IA Responsable y Gobernanza Pública
-
-1. **Uso Exclusivamente Preventivo:** Los modelos predictivos están vetados para recortar presupuestos, calificar punitivamente el desempeño docente o desincentivar la matrícula de estudiantes de bajo rendimiento.
-2. **Soporte a la Decisión Humana (*Human-in-the-loop*):** La predicción es una señal probabilística; las visitas domiciliarias y la verificación en terreno por parte de la Secretaría de Educación prevalecen sobre el algoritmo.
-3. **Privacidad y Hábeas Data (Ley 1581 de 2012):** El análisis se realiza a nivel agregado de sede educativa e indicadores contextuales, evitando la estigmatización de estudiantes individuales y protegiendo los datos de menores de edad.
-4. **Monitoreo Continuo de Deriva (*Drift*):** Auditorías periódicas ante cambios estructurales en el sistema educativo, migraciones territoriales o reformas en programas sociales.
+- **Frontend:** React 19, TypeScript, Tailwind CSS v4, Motion (UI animations and tab transitions).
+- **Iconography:** Lucide React.
+- **Visualization and Maps:** Vector SVG choropleth with the geometries of Colombia's 32 departments, distribution bar charts, confusion matrices, and SHAP force-plot charts.
+- **Persistence:** `localStorage` for action plans and per-site intervention statuses; native CSV report generation.
+- **Build Tools:** Vite 8, esbuild.
 
 ---
 
-## 8. Licencia y Créditos
+## 7. Responsible AI and Public Governance Principles
 
-Este proyecto se distribuye bajo la licencia **Apache 2.0**. Desarrollado como contribución al fortalecimiento de las capacidades analíticas del sector educativo público colombiano.
+1. **Strictly Preventive Use:** Predictive models are barred from cutting budgets, punitively rating teacher performance, or discouraging the enrollment of lower-performing students.
+2. **Human-in-the-Loop Decision Support:** The prediction is a probabilistic signal; home visits and on-the-ground verification by the Education Authority take precedence over the algorithm.
+3. **Privacy and Habeas Data (Law 1581 of 2012):** Analysis is conducted at the aggregated school-site and contextual-indicator level, avoiding the stigmatization of individual students and protecting minors' data.
+4. **Continuous Drift Monitoring:** Periodic audits in response to structural changes in the education system, territorial migration, or reforms to social programs.
+
+---
+
+## 8. License and Credits
+
+This project is distributed under the **Apache 2.0** license. Developed as a contribution to strengthening the analytical capabilities of Colombia's public education sector.
