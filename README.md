@@ -6,6 +6,9 @@
 [![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-4.3.3-38B2AC.svg)](https://tailwindcss.com)
 [![Machine Learning](https://img.shields.io/badge/Models-Dual%20XGBoost%20%2B%20TreeSHAP-FF6600.svg)](https://xgboost.readthedocs.io)
 
+APP:
+https://dashboard-draft-ml-tool-for-dropout-three.vercel.app/
+
 > **Governance and Scope Note:** This application is a demonstrative environment and functional prototype for Colombia's **97 Certified Education Authorities (ETC)** and the **Ministry of National Education (MEN)**. It uses synthetic data structured under the taxonomy of the 2018–2023 master panel and does not constitute an official, binding prediction.
 
 ---
